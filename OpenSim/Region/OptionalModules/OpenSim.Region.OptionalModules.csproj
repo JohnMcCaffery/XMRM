@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BAF8E8F2-0000-0000-0000-000000000000}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpenSim.Region.OptionalModules</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
+    <RootNamespace>OpenSim.Region.OptionalModules</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <StartArguments>
+    </StartArguments>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>False</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>True</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetOpenMail">
+      <HintPath>..\..\..\bin\DotNetOpenMail.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins, Version=0.5.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="Nini">
+      <HintPath>..\..\..\bin\Nini.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse">
+      <HintPath>..\..\..\bin\OpenMetaverse.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse.StructuredData">
+      <HintPath>..\..\..\bin\OpenMetaverse.StructuredData.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes">
+      <HintPath>..\..\..\bin\OpenMetaverseTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Capabilities">
+      <HintPath>..\..\..\bin\OpenSim.Capabilities.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Data">
+      <HintPath>..\..\..\bin\OpenSim.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Framework">
+      <HintPath>..\..\..\bin\OpenSim.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Framework.Communications">
+      <HintPath>..\..\..\bin\OpenSim.Framework.Communications.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Framework.Console">
+      <HintPath>..\..\..\bin\OpenSim.Framework.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Framework.Servers">
+      <HintPath>..\..\..\bin\OpenSim.Framework.Servers.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Framework.Servers.HttpServer">
+      <HintPath>..\..\..\bin\OpenSim.Framework.Servers.HttpServer.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Framework.Statistics">
+      <HintPath>..\..\..\bin\OpenSim.Framework.Statistics.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Region.ClientStack.LindenUDP">
+      <HintPath>..\..\..\bin\OpenSim.Region.ClientStack.LindenUDP.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Region.CoreModules">
+      <HintPath>..\..\..\bin\OpenSim.Region.CoreModules.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Region.CoreModules.Tests">
+      <HintPath>..\..\..\bin\OpenSim.Region.CoreModules.Tests.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Region.Framework">
+      <HintPath>..\..\..\bin\OpenSim.Region.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Region.Physics.Manager">
+      <HintPath>..\..\..\bin\OpenSim.Region.Physics.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Server.Base">
+      <HintPath>..\..\..\bin\OpenSim.Server.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Server.Handlers">
+      <HintPath>..\..\..\bin\OpenSim.Server.Handlers.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Services.Base">
+      <HintPath>..\..\..\bin\OpenSim.Services.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Services.Connectors">
+      <HintPath>..\..\..\bin\OpenSim.Services.Connectors.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSim.Services.Interfaces">
+      <HintPath>..\..\..\bin\OpenSim.Services.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartThreadPool">
+      <HintPath>..\..\..\bin\SmartThreadPool.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Name>System.Core</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xaml">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.Xml</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="XMLRPC">
+      <HintPath>..\..\..\bin\XMLRPC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Communications\OpenSim.Framework.Communications.csproj">
+      <Name>OpenSim.Framework.Communications</Name>
+      <Project>{663117AE-0000-0000-0000-000000000000}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MRM-API\OpenSim.Region.MRM-API.csproj">
+      <Project>{DC066CA8-6C2F-442B-A87E-ABC807A48203}</Project>
+      <Name>OpenSim.Region.MRM-API</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Agent\InternetRelayClientView\IRCStackModule.cs" />
+    <Compile Include="Agent\InternetRelayClientView\Server\IRCClientView.cs" />
+    <Compile Include="Agent\InternetRelayClientView\Server\IRCServer.cs" />
+    <Compile Include="Agent\TextureSender\J2KDecoderCommandModule.cs" />
+    <Compile Include="Agent\UDP\Linden\LindenUDPInfoModule.cs" />
+    <Compile Include="Asset\AssetInfoModule.cs" />
+    <Compile Include="Avatar\Appearance\AppearanceInfoModule.cs" />
+    <Compile Include="Avatar\Chat\ChannelState.cs" />
+    <Compile Include="Avatar\Chat\IRCBridgeModule.cs" />
+    <Compile Include="Avatar\Chat\IRCConnector.cs" />
+    <Compile Include="Avatar\Chat\RegionState.cs" />
+    <Compile Include="Avatar\Concierge\ConciergeModule.cs" />
+    <Compile Include="Avatar\Voice\FreeSwitchVoice\FreeSwitchVoiceModule.cs" />
+    <Compile Include="Avatar\Voice\VivoxVoice\VivoxVoiceModule.cs" />
+    <Compile Include="Avatar\XmlRpcGroups\GroupsMessagingModule.cs" />
+    <Compile Include="Avatar\XmlRpcGroups\GroupsModule.cs" />
+    <Compile Include="Avatar\XmlRpcGroups\IGroupsServicesConnector.cs" />
+    <Compile Include="Avatar\XmlRpcGroups\SimianGroupsServicesConnectorModule.cs" />
+    <Compile Include="Avatar\XmlRpcGroups\XmlRpcGroupsServicesConnectorModule.cs" />
+    <Compile Include="Example\BareBonesNonShared\BareBonesNonSharedModule.cs" />
+    <Compile Include="Example\BareBonesShared\BareBonesSharedModule.cs" />
+    <Compile Include="Framework\Monitoring\MonitorServicesModule.cs" />
+    <Compile Include="PhysicsParameters\PhysicsParameters.cs" />
+    <Compile Include="PrimLimitsModule\PrimLimitsModule.cs" />
+    <Compile Include="Scripting\Minimodule\ExtensionHandler.cs" />
+    <Compile Include="Scripting\Minimodule\Graphics.cs" />
+    <Compile Include="Scripting\Minimodule\Heightmap.cs" />
+    <Compile Include="Scripting\Minimodule\Host.cs" />
+    <Compile Include="Scripting\Minimodule\InventoryItem.cs" />
+    <Compile Include="Scripting\Minimodule\ISecurityCredential.cs" />
+    <Compile Include="Scripting\Minimodule\LOParcel.cs" />
+    <Compile Include="Scripting\Minimodule\MRMModule.cs" />
+    <Compile Include="Scripting\Minimodule\ObjectAccessor.cs" />
+    <Compile Include="Scripting\Minimodule\Script.cs" />
+    <Compile Include="Scripting\Minimodule\ScriptAccessor.cs" />
+    <Compile Include="Scripting\Minimodule\ScriptMRM.cs" />
+    <Compile Include="Scripting\Minimodule\ScriptXMRM.cs" />
+    <Compile Include="Scripting\Minimodule\SecurityCredential.cs" />
+    <Compile Include="Scripting\Minimodule\SEUser.cs" />
+    <Compile Include="Scripting\Minimodule\SOPObject.cs" />
+    <Compile Include="Scripting\Minimodule\SOPObjectInventory.cs" />
+    <Compile Include="Scripting\Minimodule\SOPObjectMaterial.cs" />
+    <Compile Include="Scripting\Minimodule\SPAvatar.cs" />
+    <Compile Include="Scripting\Minimodule\SPAvatarAttachment.cs" />
+    <Compile Include="Scripting\Minimodule\Test\DrunkenTextAppreciationModule.cs" />
+    <Compile Include="Scripting\Minimodule\Test\TestModule.cs" />
+    <Compile Include="Scripting\Minimodule\World.cs" />
+    <Compile Include="Scripting\ObjectModules\IObjectModule.cs" />
+    <Compile Include="Scripting\RegionReadyModule\RegionReadyModule.cs" />
+    <Compile Include="Scripting\ScriptModuleComms\ScriptModuleCommsModule.cs" />
+    <Compile Include="Scripting\XmlRpcRouterModule\XmlRpcGridRouterModule.cs" />
+    <Compile Include="Scripting\XmlRpcRouterModule\XmlRpcRouterModule.cs" />
+    <Compile Include="ServiceConnectorsIn\Freeswitch\FreeswitchServiceInConnectorModule.cs" />
+    <Compile Include="World\AutoBackup\AutoBackupModule.cs" />
+    <Compile Include="World\AutoBackup\AutoBackupModuleState.cs" />
+    <Compile Include="World\MoneyModule\SampleMoneyModule.cs" />
+    <Compile Include="World\NPC\NPCAvatar.cs" />
+    <Compile Include="World\NPC\NPCModule.cs" />
+    <Compile Include="World\TreePopulator\TreePopulatorModule.cs" />
+    <Compile Include="World\WorldView\WorldViewModule.cs" />
+    <Compile Include="World\WorldView\WorldViewRequestHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\OptionalModules.addin.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

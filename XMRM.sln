@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSim.Region.MRM-API", "OpenSim\Region\MRM-API\OpenSim.Region.MRM-API.csproj", "{DC066CA8-6C2F-442B-A87E-ABC807A48203}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSim.Region.OptionalModules", "OpenSim\Region\OptionalModules\OpenSim.Region.OptionalModules.csproj", "{BAF8E8F2-0000-0000-0000-000000000000}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC066CA8-6C2F-442B-A87E-ABC807A48203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC066CA8-6C2F-442B-A87E-ABC807A48203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC066CA8-6C2F-442B-A87E-ABC807A48203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC066CA8-6C2F-442B-A87E-ABC807A48203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAF8E8F2-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF8E8F2-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF8E8F2-0000-0000-0000-000000000000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF8E8F2-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
