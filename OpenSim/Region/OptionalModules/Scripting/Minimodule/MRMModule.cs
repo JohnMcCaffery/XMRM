@@ -339,8 +339,9 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         #region Commands
 
         private void RunCommand(string[] cmd, UUID id) {
-            if (m_currentRegion != null && !m_currentRegion.Equals(m_scene.RegionInfo.RegionName))
+            if (!cmd[1].ToLower().StartsWith("region") && m_currentRegion != null && !m_currentRegion.Equals(m_scene.RegionInfo.RegionName)) {
                 return;
+            }
             if (!m_currentScripts.ContainsKey(id))
                 m_currentScripts.Add(id, null);
             if (cmd.Length < 2) {
@@ -499,10 +500,12 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                     "MRM <command> <arg> - Commands that will affect MRMs. <sript> and region can either be names or '" + ALL + "' or '" + NONE + "'.\n" +
                     "MRM list - List all scripts currently initialised.\n" +
                     "MRM reset [script] - Shutdown then restart a script. If [script] is not specified the selected script is reset.\n" +
-                    "MRM select <script> - Sets w.Add(name, (module, command) => OnCommand(module, command, scene))hich script is currently being affected by the other commands.\n" +
-                    "MRM start [script] - Start a script. If [script] is not specified the selected script is shutdown. If the script is already running nothing happens.\n" +
-                    "MRM stop [script] - Shutdown a script. If [script] is not specified the selected script is shutdown.\n" +
+                    "MRM select <script> - Sets which script is currently being affected by the other commands.\n" +
+                    "MRM start [script] - Start a script that has previously been stopped. If the script is already running nothing happens. If [script] is not specified the selected script is shutdown. \n" +
+                    "MRM stop [script] - Shutdown a script. Script can later be started up with the 'start' command. If [script] is not specified the selected script is shutdown.\n" +
+                    "MRM dispose [script] - Dispose of a script. Script will be completely removed and can only be restarted by saving the script again in world. If [script] is not specified the selected script is shutdown.\n" +
                     "MRM region <region> - Set the region in which scripts will be affected by the other commands.",
+                    "MRM stats <region> - Print out statistics about the number of MRMs on the region and how many primitives those MRMs are interacting with.",
                     m_commandListener);
 
                 scene.EventManager.OnFrame += OnFrame;

@@ -192,7 +192,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             argConfig.AddFlag(XMRM, GOD, "g", false);
             argConfig.AddFlag(XMRM, GOD, "G", false);
 
-            scriptArguments = argConfig.Argument.Split(' ', '\n');
+            scriptArguments = argConfig.Argument.Length == 0 ? new string[0] : argConfig.Argument.Split(' ', '\n');
 
             //Merge the three guaranteed config sources
             IConfigSource config = new IniConfigSource();

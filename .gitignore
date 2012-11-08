@@ -43,10 +43,14 @@ Thumbs.db
 *.ilk
 *Debug*
 *Release*
+*-Mine*
 
 # Folders #
 ###################
 bin/
+MRM2Diana/
+Documentation/
+Documentation-XMRM/
 
 # Misc #
 ###################
