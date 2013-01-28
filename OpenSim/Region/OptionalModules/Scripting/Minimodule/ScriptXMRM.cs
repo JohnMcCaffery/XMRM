@@ -88,7 +88,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         private const string ASSEMBLY = "Assembly";
         private const string CLASS = "Class";
         private const string BASE_FOLDER = "BaseFolder";
-        private const string NO_SHADOW_COPY = "NoShadowCopy";
+        private const string SHADOW_COPY = "ShadowCopy";
         private const string GOD = "IsGod";
 
         internal override string Type { get { return XMRM; } }
@@ -125,7 +125,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             if (configFile != null)
                 setup.ConfigurationFile = Path.GetFullPath(configFile);
             setup.ApplicationBase = baseFolder;
-            setup.ShadowCopyFiles = m_xmrmConfig.GetBoolean(NO_SHADOW_COPY, true).ToString().ToLower();
+            setup.ShadowCopyFiles = m_xmrmConfig.GetBoolean(SHADOW_COPY, true).ToString().ToLower();
 
             return true;
         }
@@ -186,8 +186,8 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             argConfig.AddSetting(XMRM, BASE_FOLDER, "b");
             argConfig.AddSetting(XMRM, BASE_FOLDER, "B");
 
-            argConfig.AddFlag(XMRM, NO_SHADOW_COPY, "ds", false);
-            argConfig.AddFlag(XMRM, NO_SHADOW_COPY, "DS", false);
+            argConfig.AddFlag(XMRM, SHADOW_COPY, "s", false);
+            argConfig.AddFlag(XMRM, SHADOW_COPY, "S", false);
 
             argConfig.AddFlag(XMRM, GOD, "g", false);
             argConfig.AddFlag(XMRM, GOD, "G", false);

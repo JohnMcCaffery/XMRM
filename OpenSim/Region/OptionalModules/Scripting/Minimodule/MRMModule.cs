@@ -617,6 +617,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         #endregion
 
         private void QueueWork(Func<object> work) {
+            INPCModule[] npcModules = m_scene.RequestModuleInterfaces<INPCModule>();
             //Console.WriteLine("\n" + new StackTrace() + "\n");
             //Func<object> safeWork = () => {
             //    try {
