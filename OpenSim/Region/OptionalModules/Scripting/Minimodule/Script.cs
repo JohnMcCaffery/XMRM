@@ -267,7 +267,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 return false;
             }
             //m_working = true;
-            m_log.Debug("[" + Type + "]: Starting " + Name + ".");
+            m_log.Info("[" + Type + "]: Starting " + Name + ".");
             ErrorString = "";
 
             m_world = new World(m_scene, m_creds, IsGod);
@@ -303,16 +303,27 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 Stop();
             }).Start();
 
-            Type rootT = typeof(Root);
-            m_root = (Root)m_appDomain.CreateInstanceAndUnwrap(rootT.Assembly.FullName, rootT.FullName);
-            string outcome = m_root.Start(m_assembly, m_class, m_host, m_world, ID, Name, unloader, m_args);
-            if (outcome != null) {
-                KillAppDomain();
-                ErrorString = outcome;
-                Console.WriteLine("Problem. Outcome = " + outcome);
+            try {
+                Type rootT = typeof(Root);
+                m_log.Debug("[" + Type + "] Creating sandboxed script.");
+                m_root = (Root)m_appDomain.CreateInstanceAndUnwrap(rootT.Assembly.FullName, rootT.FullName);
+                m_log.Debug("[" + Type + "] Starting sandboxed script.");
+                string outcome = m_root.Start(m_assembly, m_class, m_host, m_world, ID, Name, unloader, m_args);
+                if (outcome != null) {
+                    KillAppDomain();
+                    ErrorString = outcome;
+                    Console.WriteLine("Problem. Outcome = " + outcome);
+                    return false;
+                }
+                return true;
+            } catch (Exception e) {                m_world.Shutdown();
+                ErrorString = "Unable to start MRM." + e.Message + "\n" + e.StackTrace;
+                while (e.InnerException != null) {
+                    e = e.InnerException;
+                    ErrorString += "\n\nInner Exception: " + e.Message + "\n" + e.StackTrace;
+                }
                 return false;
             }
-            return true;
         }
 
         private void KillAppDomain() {
@@ -340,8 +351,11 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         /// <returns>True if the script was started successfully.</returns>
         private bool StartLocal() {
             try {
+                m_log.Debug("[" + Type + "] Creating local script.");
                 m_mrm = (MRMBase)Activator.CreateInstanceFrom(m_assembly, m_class).Unwrap();
+                m_log.Debug("[" + Type + "] Initialising local script.");
                 m_mrm.InitMiniModule(m_world, m_host, ID);
+                m_log.Debug("[" + Type + "] Starting local script.");
                 m_mrm.Start(m_args);
                 return true;
             } catch (Exception e) {
@@ -381,7 +395,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             }
             m_stopping = true;
             //m_working = true;
-            m_log.Debug("[" + Type + "]: Stopping " + Name + ".");
+            m_log.Info("[" + Type + "]: Stopping " + Name + ".");
             StopRunning();
             KillAppDomain();
             m_log.Warn("[" + Type + "]: " + Name + " stopped.");
