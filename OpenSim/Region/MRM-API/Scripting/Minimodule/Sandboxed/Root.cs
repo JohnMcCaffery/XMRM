@@ -41,7 +41,7 @@ using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 using System.Runtime.Remoting.Lifetime;
 using System.Threading;
 
-namespace OpenSim.Region.OptionalModules.Scripting.Minimodule.API.Sandboxed {
+namespace OpenSim.Region.OptionalModules.Scripting.Minimodule.Sandboxed {
     public class Root : KillableProxy {
         public class Unloader : KillableProxyChild {
             public Unloader(ISponsor sponsor)

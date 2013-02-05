@@ -63,7 +63,7 @@ namespace StAndrews.ExternalMRM {
         }
         private void TriggerTouch(IObject sender, TouchEventArgs args) {
             _obj = sender;
-            OpenSim.Region.OptionalModules.Scripting.Minimodule.API.Sandboxed.Root.QueueEvent(() => _OnTouch(this, args));
+            OpenSim.Region.OptionalModules.Scripting.Minimodule.Sandboxed.Root.QueueEvent(() => _OnTouch(this, args));
         }
 
         public bool Exists {

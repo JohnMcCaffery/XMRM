@@ -73,10 +73,10 @@
     <Compile Include="Scripting\Minimodule\Interfaces\ISocialEntity.cs" />
     <Compile Include="Scripting\Minimodule\Interfaces\IWorld.cs" />
     <Compile Include="Scripting\Minimodule\MRMBase.cs" />
-    <Compile Include="Scripting\Minimodule\Object\IObjectInventory.cs" />
-    <Compile Include="Scripting\Minimodule\Object\IObjectPhysics.cs" />
-    <Compile Include="Scripting\Minimodule\Object\IObjectShape.cs" />
-    <Compile Include="Scripting\Minimodule\Object\IObjectSound.cs" />
+    <Compile Include="Scripting\Minimodule\Interfaces\Object\IObjectInventory.cs" />
+    <Compile Include="Scripting\Minimodule\Interfaces\Object\IObjectPhysics.cs" />
+    <Compile Include="Scripting\Minimodule\Interfaces\Object\IObjectShape.cs" />
+    <Compile Include="Scripting\Minimodule\Interfaces\Object\IObjectSound.cs" />
     <Compile Include="Scripting\Minimodule\WorldX\IWorldAudio.cs" />
     <Compile Include="Scripting\Minimodule\Sandboxed\SandboxedHost.cs" />
     <Compile Include="Scripting\Minimodule\Sandboxed\SandboxedObject.cs" />
