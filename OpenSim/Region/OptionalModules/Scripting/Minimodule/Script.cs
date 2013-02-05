@@ -44,7 +44,6 @@ using OpenSim.Region.OptionalModules.Scripting.Minimodule.Sandboxed;
 using Amib.Threading;
 using System.Collections;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
-using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
     internal abstract class Script : KillableProxy {
@@ -109,11 +108,11 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
 
         protected string ErrorString {
             get {
-                //return m_errors.ToArray().Aggregate<object, string>("", (sum, current) => sum + current + "\n");
-                string ret = m_errors.ToArray().Aggregate<object, string>("", (sum, current) => sum + current + "\n");
-                return ret;
+                return m_errors.ToArray().Aggregate<object, string>("", (sum, current) => sum + current + "\n").TrimEnd('\n');
             }
-            set { m_errors = new ArrayList(value.Split('\n').ToList()); }
+            set {
+                m_errors = new ArrayList(value.Split('\n').ToList());
+            }
         }
 
         protected string OldScript { get { return m_oldScript; } }
@@ -237,15 +236,22 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 owner.SendAlertMessage(problem);
                 foreach (var line in Errors)
                     owner.SendAlertMessage(line.ToString());
+                //Console.WriteLine("Error2Console: " + m_error2Console + "\nError: " + ErrorString);
                 if (m_error2Console) {
                     m_log.Warn("[" + Type + "]: " + problem);
-                    Console.WriteLine(ErrorString);
+                    foreach (var line in Errors)
+                        m_log.Debug(line.ToString());
+                    //if (ErrorString.Trim().Length > 0)
+                        //m_log.Debug(ErrorString);
                 } else
                     m_log.Warn("[" + Type + "]: " + problem + " " + Errors[0]);
             } else {
                 m_log.Warn("[" + Type + "]: " + problem);
-                Console.WriteLine(ErrorString);
+                if (ErrorString.Trim().Length > 0)
+                    m_log.Debug(ErrorString);
             }
+            //m_scene.ForEachClient(user =>
+            //    user.SendAlertMessage("Unable to start " + Name + ". " + ErrorString + "."));
         }
 
         /// <summary>
@@ -304,7 +310,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 m_log.Debug("[" + Type + "] Creating sandboxed script.");
                 m_root = (Root)m_appDomain.CreateInstanceAndUnwrap(rootT.Assembly.FullName, rootT.FullName);
                 m_log.Debug("[" + Type + "] Starting sandboxed script.");
-                string outcome = m_root.Start(m_assembly, m_class, new HostWrapper(m_host), new WorldWrapper(m_world), ID, Name, unloader, m_args);
+                string outcome = m_root.Start(m_assembly, m_class, m_host, m_world, ID, Name, unloader, m_args);
                 if (outcome != null) {
                     KillAppDomain();
                     ErrorString = outcome;
@@ -313,7 +319,6 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 return true;
             } catch (Exception e) {
                 KillAppDomain();
-                Console.WriteLine("Problem creating app domain.");
                 ErrorString = "Unable to start MRM." + e.Message + "\n" + e.StackTrace;
                 while (e.InnerException != null) {
                     e = e.InnerException;

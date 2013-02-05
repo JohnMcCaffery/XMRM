@@ -53,41 +53,17 @@ using Mono.Addins;
 using System.Runtime.Remoting.Lifetime;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
-    /// <summary>
-    /// The main region module which runs all mini region modules.
-    /// 
-    /// Contains  code for dealing with console commands and listeners for script related events.
-    /// Also initialises state from the Opensim.ini config file.
-    /// </summary>
     [Extension(Path = "/OpenSim/RegionModules", NodeName = "RegionModule", Id = "MRMModule")]
     public class MRMModule : INonSharedRegionModule, IMRMModule, IScriptModule {
-        /// <summary>
-        /// Script flag indicating the script is a C# MRM. If a script starts with this it will be compiled and loaded as an MRM.
-        /// </summary>
         private const string MRMFlag = "//MRM:C#";
-        /// <summary>
-        /// Script flag indicating the script is an external. If a script starts with this it will be parsed for the location of an assembly and a MRMBase subclass.
-        /// </summary>
         private const string XMRMFlag = "//MRM:X";
-        /// <summary>
-        /// Flag indicating all scripts are to be affected.
-        /// </summary>
         private const string ALL = "all";
-        /// <summary>
-        /// Flag indicating no scripts are to be affected.
-        /// </summary>
         private const string NONE = "none";
         
 
-        /// <summary>
-        /// Logger. For debugging. Use this rather than Console.WriteLine.
-        /// </summary>
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly Dictionary<Type, object> m_extensions = new Dictionary<Type, object>();
-        /// <summary>
-        /// All scripts currently tracked. Some may be stopped.
-        /// </summary>
         private readonly Dictionary<UUID, string> m_currentScripts = new Dictionary<UUID, string>();
         private readonly MicroScheduler m_microthreads = new MicroScheduler();
 
@@ -99,63 +75,18 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         
         private readonly object m_startLock = new object();
 
-        /// <summary>
-        /// The scenegraph of the region this region module is tied to. 
-        /// Use this to access the world.
-        /// </summary>
         private Scene m_scene;
 
-        /// <summary>
-        /// The config source, bound to OpenSim.ini.
-        /// </summary>
         private IConfigSource m_config;
-        /// <summary>
-        /// Config relevant to MRMs.
-        /// </summary>
+
         private IConfig m_mrmConfig;
-
-        /// <summary>
-        /// The policy level for MRM scripts written in world.
-        /// </summary>
-        private PolicyLevel m_mrmPolicy;
-        /// <summary>
-        /// The policy level for MRM scripts written externally.
-        /// </summary>
-        private PolicyLevel m_xmrmPolicy;
-        /// <summary>
-        /// The name of the current region.
-        /// </summary>
+        private PolicyLevel m_mrmPolicy, m_xmrmPolicy;
         private string m_currentRegion;
-        /// <summary>
-        /// Whether MRM scripts written in world are enabled.
-        /// </summary>
-        private bool m_mrmEnabled;
-        /// <summary>
-        /// Whether MRM scripts written externally are enabled.
-        /// </summary>
-        private bool m_xmrmEnabled;
-        /// <summary>
-        /// Whether scripts are to be sandboxed when loaded.
-        /// </summary>
-        private bool m_sandboxed;
-
-        /// <summary>
-        /// Whether running in hidden mode.
-        /// In hidden mode MRMs may only be accessed by other region modules, not by client side commands.
-        /// </summary>
-        private bool m_hidden;
-        /// <summary>
-        /// Whether errors in scripts are to be written to the console in the main application domain.
-        /// </summary>
+        private bool m_mrmEnabled, m_xmrmEnabled;
+        private bool m_sandboxed, m_hidden;
         private bool m_error2Console;
 
-        /// <summary>
-        /// Container for all scripts.
-        /// </summary>
         private ScriptAccessor m_scripts;
-        /// <summary>
-        /// Pool of threads to do work for this region module.
-        /// </summary>
         private SmartThreadPool m_threadPool;
 
         public MRMModule() {
@@ -414,7 +345,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             if (!m_currentScripts.ContainsKey(id))
                 m_currentScripts.Add(id, null);
             if (cmd.Length < 2) {
-                m_log.Warn("[Minimodule]: Ignoring MRM command. No command specified.");
+                m_log.Warn("[XMRM]: Ignoring XMRM command. No command specified.");
                 return;
             }
             string command = cmd[1];
@@ -431,7 +362,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                     default: m_log.Warn(command + " is not a valid XMRM command. Ignoring."); break;
                 }
             } catch (Exception e) {
-                m_log.Info("[Minimodule] Error: " + e);
+                m_log.Info("[MRM] Error: " + e);
                 Console.WriteLine(e.StackTrace);
                 m_scene.ForEachClient(delegate(IClientAPI user) {
                     user.SendAlertMessage(
@@ -458,15 +389,15 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 script += " " + cmd[i];
             if (script.ToLower().Equals(ALL)) {
                 m_currentScripts[id] = ALL;
-                m_log.Warn("[Minimodule]: All scripts will be affected.");
+                m_log.Warn("[MRM]: All scripts will be affected.");
             } else if (script.ToLower().Equals(NONE)) {
                 m_currentScripts[id] = null;
-                m_log.Warn("[Minimodule]: Default script disabled.");
+                m_log.Warn("[MRM]: Default script disabled.");
             } else if (m_scripts.IsScript(script)) {
                 m_currentScripts[id] = script;
-                m_log.Warn("[Minimodule]: '" + script + "' selected.");
+                m_log.Warn("[MRM]: '" + script + "' selected.");
             } else {
-                m_log.Warn("[Minimodule]: Unable to select script. '" + script + "' is not a known script.");
+                m_log.Warn("[MRM]: Unable to select script. '" + script + "' is not a known script.");
                 m_currentScripts[id] = null;
             }
         }
@@ -593,7 +524,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                     scene.EventManager.OnChatFromClient += m_chatListener;
                 }
 
-                m_log.Info("[Minimodule]: Loaded region '" + scene.RegionInfo.RegionName + "'.");            
+                m_log.Info("[MRM]: Loaded region '" + scene.RegionInfo.RegionName + "'.");            
             }
         }
 
@@ -609,7 +540,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 try {
                     script.Dispose();
                 } catch (Exception e) {
-                    m_log.Info("[Minimodule] Error: " + e);
+                    m_log.Info("[MRM] Error: " + e);
                     Console.WriteLine(e.StackTrace);
                 }
             }
@@ -676,8 +607,8 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         }
 
         public void StartProcessing() {
-            m_log.Info("[Minimodule]: Starting to process scripts.");
             m_threadPool.Start();
+            Console.WriteLine("Starting processing scripts.");
         }
 
         public void SuspendScript(UUID sogID) {
@@ -692,18 +623,18 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             //    try {
             //        return work();
             //    } catch (UnauthorizedAccessException e) {
-            //        m_log.Error("[Minimodule] UAE " + e.Message);
-            //        m_log.Error("[Minimodule] " + e.StackTrace);
+            //        m_log.Error("[MRM] UAE " + e.Message);
+            //        m_log.Error("[MRM] " + e.StackTrace);
 
             //        if (e.InnerException != null)
-            //            m_log.Error("[Minimodule] " + e.InnerException);
+            //            m_log.Error("[MRM] " + e.InnerException);
 
             //        m_scene.ForEachClient(delegate(IClientAPI user) {
             //            user.SendAlertMessage(
             //                "MRM UnAuthorizedAccess: " + e);
             //        });
             //    } catch (Exception e) {
-            //        m_log.Info("[Minimodule] Error: " + e);
+            //        m_log.Info("[MRM] Error: " + e);
             //        Console.WriteLine(e.StackTrace);
             //        m_scene.ForEachClient(delegate(IClientAPI user) {
             //            user.SendAlertMessage(

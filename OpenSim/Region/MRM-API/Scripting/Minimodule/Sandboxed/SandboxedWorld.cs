@@ -33,7 +33,7 @@ using OpenSim.Region.OptionalModules.Scripting.Minimodule.WorldX;
 using System;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 using System.Threading;
-using OpenSim.Region.OptionalModules.Scripting.Minimodule.Sandboxed;
+using OpenSim.Region.OptionalModules.Scripting.Minimodule.API.Sandboxed;
 
 namespace StAndrews.ExternalMRM {
     public class SandboxedWorld : KillableProxy, IWorld {
