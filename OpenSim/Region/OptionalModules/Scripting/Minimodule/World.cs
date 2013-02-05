@@ -35,6 +35,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.Remoting.Lifetime;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
+using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 {
@@ -42,16 +43,18 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 
         private readonly Scene m_internalScene;
         private readonly ISecurityCredential m_security;
-        private readonly Heightmap m_heights;
+        private readonly IHeightmap m_heights;
 
-        private readonly ObjectAccessor m_objs;
+        private readonly IObjectAccessor m_objs;
+        private readonly ObjectAccessor m_rawObjs;
 
 
         public World(Scene internalScene, ISecurityCredential securityCredential, bool isGod) {
             m_security = securityCredential;
             m_internalScene = internalScene;
-            m_heights = new Heightmap(m_internalScene, this);
-            m_objs = new ObjectAccessor(m_internalScene, securityCredential, isGod);
+            m_heights = new HeightmapWrapper(new Heightmap(m_internalScene, this));
+            m_rawObjs = new ObjectAccessor(m_internalScene, securityCredential, isGod);
+            m_objs = new ObjectAccessorWrapper(m_rawObjs);
             _chatListeners = new List<OnChatDelegate>();
             _newUserListeners = new List<OnNewUserDelegate>();
             CurrentCount++;
@@ -72,7 +75,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
         /// Will remove all touch listeners from all objects as well as removing all chat listeners and new user listeners.
         /// </summary>
         internal void Shutdown() {
-            m_objs.Shutdown();
+            m_rawObjs.Shutdown();
 
             lock (_newUserListeners) {
                 foreach (var listener in _newUserListeners.ToArray())
@@ -124,7 +127,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
             if (_OnNewUser != null)
             {
                 NewUserEventArgs e = new NewUserEventArgs();
-                e.Avatar = new SPAvatar(m_internalScene, presence.UUID, m_security, m_objs);
+                e.Avatar = new SPAvatar(m_internalScene, presence.UUID, m_security, m_rawObjs);
                 _OnNewUser(this, e);
             }
         }
@@ -187,7 +190,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
             if (chat.Sender == null && chat.SenderObject != null)
             {
                 ChatEventArgs e = new ChatEventArgs();
-                e.Sender = Objects[((SceneObjectPart) chat.SenderObject).LocalId];
+                e.Sender = new EntityWrapper(Objects[((SceneObjectPart) chat.SenderObject).LocalId]);
                 e.Text = chat.Message;
                 e.Channel = chat.Channel;
 
@@ -198,7 +201,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
             if (chat.Sender != null && chat.SenderObject == null)
             {
                 ChatEventArgs e = new ChatEventArgs();
-                e.Sender = new SPAvatar(m_internalScene, chat.Sender.AgentId, m_security, m_objs);
+                e.Sender = new EntityWrapper(new SPAvatar(m_internalScene, chat.Sender.AgentId, m_security, m_rawObjs));
                 e.Text = chat.Message;
                 e.Channel = chat.Channel;
 
@@ -234,7 +237,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 
                 foreach (ILandObject landObject in m_los)
                 {
-                    m_parcels.Add(new LOParcel(m_internalScene, landObject.LandData.LocalID, this));
+                    m_parcels.Add(new ParcelWrapper(new LOParcel(m_internalScene, landObject.LandData.LocalID, this)));
                 }
 
                 return m_parcels.ToArray();
@@ -252,7 +255,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                 for (int i = 0; i < ents.Length; i++)
                 {
                     EntityBase ent = ents[i];
-                    rets[i] = new SPAvatar(m_internalScene, ent.UUID, m_security, m_objs);
+                    rets[i] = new SPAvatar(m_internalScene, ent.UUID, m_security, m_rawObjs);
                 }
 
                 return rets;

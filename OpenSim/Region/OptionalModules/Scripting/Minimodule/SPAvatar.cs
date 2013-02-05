@@ -35,6 +35,7 @@ using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 using System.Linq;
 using System;
+using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 {
@@ -95,7 +96,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                 //}
                 //return attachments.ToArray();
 
-                return GetSP().GetAttachments().Select<SceneObjectGroup, IAvatarAttachment>(attach => new SPAvatarAttachment(attach.RootPart.UUID, attach.AttachmentPoint, m_accessor)).ToArray();
+                return GetSP().GetAttachments().Select<SceneObjectGroup, IAvatarAttachment>(attach => new AvatarAttachmentWrapper(new SPAvatarAttachment(attach.RootPart.UUID, attach.AttachmentPoint, m_accessor))).ToArray();
             }
         }
 

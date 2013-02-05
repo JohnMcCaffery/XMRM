@@ -36,6 +36,7 @@ using log4net;
 using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
+using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 {
@@ -132,11 +133,11 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                     if (sop == null)
                         return null;
                     if (m_objects.ContainsKey(sop.UUID))
-                        return m_objects[sop.UUID];
+                        return new ObjectWrapper(m_objects[sop.UUID]);
                     SOPObject obj = new SOPObject(m_scene, sop.LocalId, m_security, this);
                     lock (m_objects)
                         m_objects.Add(obj.GlobalID, obj);
-                    return obj;
+                    return new ObjectWrapper(obj);
                 } catch (Exception e) {
                     return null;
                 }
@@ -157,11 +158,11 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                     if (sop == null)
                         return null;
                     if (m_objects.ContainsKey(sop.UUID))
-                        return m_objects[sop.UUID];
+                        return new ObjectWrapper(m_objects[sop.UUID]);
                     SOPObject obj = new SOPObject(m_scene, index, m_security, this);
                     lock (m_objects)
                         m_objects.Add(obj.GlobalID, obj);
-                    return obj;
+                    return new ObjectWrapper(obj);
                 } catch (Exception e) {
                     return null;
                 }
@@ -188,12 +189,12 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                             return null;
                         sop = sog.RootPart;
                         if (m_objects.ContainsKey(sop.UUID)) 
-                            return m_objects[sop.UUID];
+                            return new ObjectWrapper(m_objects[sop.UUID]);
                     }
                     SOPObject obj = new SOPObject(m_scene, sop.LocalId, m_security, this);
                     lock (m_objects)
                         m_objects.Add(obj.GlobalID, obj);
-                    return obj;
+                    return new ObjectWrapper(obj);
                 } catch (Exception e) {
                     Console.WriteLine(e);
                     return null;
@@ -218,7 +219,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
             SOPObject ret = new SOPObject(m_scene, sog.LocalId, m_security, this);
             lock (m_objects)
                 m_objects.Add(ret.GlobalID, ret);
-            return ret;
+            return new ObjectWrapper(ret);
         }
 
         public IEnumerator<IObject> GetEnumerator()

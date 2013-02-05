@@ -34,6 +34,7 @@ using OpenSim.Region.Framework.Scenes;
 using OpenMetaverse;
 using System.Runtime.Remoting.Lifetime;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
+using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule.Object
 {
@@ -139,7 +140,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule.Object
         #region ICollection<KeyValuePair<UUID, IInventoryItem>> implementation
         public void Add (KeyValuePair<UUID, IInventoryItem> item)
         {
-            Add(item.Key, item.Value);
+            Add(item.Key, new InventoryItemWrapper(item.Value));
         }
         
         public void Clear ()

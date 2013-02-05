@@ -30,6 +30,7 @@ using log4net;
 using OpenSim.Region.Framework.Scenes;
 using OpenSim.Region.OptionalModules.Scripting.Minimodule.Interfaces;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
+using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 {
@@ -41,14 +42,14 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
         private readonly IMicrothreader m_threader;
         //private Scene m_scene;
 
-        public Host(IObject m_obj, Scene m_scene, IExtension m_extend, IMicrothreader m_threader)
+        public Host(IObject obj, Scene scene, IExtension extend, IMicrothreader threader)
         {
-            this.m_obj = m_obj;
-            this.m_threader = m_threader;
-            this.m_extend = m_extend;
+            this.m_obj = obj;
+            this.m_threader = new MicrothreaderWrapper(threader);
+            this.m_extend = new ExtensionWrapper(extend);
             //this.m_scene = m_scene;
 
-            m_graphics = new Graphics(m_scene, this);
+            m_graphics = new GraphicsWrapper(new Graphics(scene, this));
         }
 
         public IObject Object

@@ -44,6 +44,7 @@ using OpenSim.Region.OptionalModules.Scripting.Minimodule.API.Sandboxed;
 using Amib.Threading;
 using System.Collections;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
+using OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide;
 
 namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
     internal abstract class Script : KillableProxy {
@@ -308,7 +309,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 m_log.Debug("[" + Type + "] Creating sandboxed script.");
                 m_root = (Root)m_appDomain.CreateInstanceAndUnwrap(rootT.Assembly.FullName, rootT.FullName);
                 m_log.Debug("[" + Type + "] Starting sandboxed script.");
-                string outcome = m_root.Start(m_assembly, m_class, m_host, m_world, ID, Name, unloader, m_args);
+                string outcome = m_root.Start(m_assembly, m_class, new HostWrapper(m_host), new WorldWrapper(m_world), ID, Name, unloader, m_args);
                 if (outcome != null) {
                     KillAppDomain();
                     ErrorString = outcome;
@@ -316,7 +317,8 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                     return false;
                 }
                 return true;
-            } catch (Exception e) {                m_world.Shutdown();
+            } catch (Exception e) {
+                m_world.Shutdown();
                 ErrorString = "Unable to start MRM." + e.Message + "\n" + e.StackTrace;
                 while (e.InnerException != null) {
                     e = e.InnerException;

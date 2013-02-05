@@ -55,8 +55,8 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule.API.Sandboxed {
         }
 
         private static Queue<Action> m_eventQ = new Queue<Action>();
-        private static bool m_cont = false;
-        private static bool m_stopped = false;
+        //private static bool m_cont = false;
+        //private static bool m_stopped = false;
 
         internal static void QueueEvent(Action evt) {
             evt.Invoke();
