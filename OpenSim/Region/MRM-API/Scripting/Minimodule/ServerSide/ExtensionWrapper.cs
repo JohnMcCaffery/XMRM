@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenSim.Region.OptionalModules.Scripting.Minimodule.Interfaces;
+using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 
 namespace OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide {
-    public class ExtensionWrapper : IExtension {
+    public class ExtensionWrapper : KillableProxy, IExtension {
         private IExtension m_extension;
         
         public ExtensionWrapper (IExtension extension) {

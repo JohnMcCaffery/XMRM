@@ -97,19 +97,21 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             : base(script, id, localID, config, scene, policy, scriptAccessor, error2Console) {
         }
 
-        private IConfig m_xmrmConfig;
+        private bool m_isGod;
 
         protected override bool Config(out string assembly, out string clazz, out AppDomainSetup setup, out string[] args) {
-            m_xmrmConfig = LoadConfigValues(out args);
-            assembly = m_xmrmConfig.Get(ASSEMBLY);
-            clazz = m_xmrmConfig.Get(CLASS);
+            IConfig mrmConfig = LoadConfigValues(out args);
+            assembly = mrmConfig.Get(ASSEMBLY);
+            clazz = mrmConfig.Get(CLASS);
             setup = new AppDomainSetup();
 
-            string configFile = m_xmrmConfig.Get(CONFIG_FILE);
+            m_isGod = m_config.Configs["MRM"].GetBoolean("XMRMGodScripts", false) || mrmConfig.GetBoolean(GOD, false);
+
+            string configFile = mrmConfig.Get(CONFIG_FILE);
 
             //Default base folder is the folder the config file is in if there is one or the folder the assembly file is in if there isn't.
             string defaultBaseFolder = Path.GetDirectoryName(Path.GetFullPath(configFile != null ? configFile : assembly));
-            string baseFolder = m_xmrmConfig.Get(BASE_FOLDER, defaultBaseFolder);
+            string baseFolder = mrmConfig.Get(BASE_FOLDER, defaultBaseFolder);
 
             //If the config file specified is relative take it relative to the default base folder.
             if (!Path.IsPathRooted(baseFolder))
@@ -125,15 +127,13 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             if (configFile != null)
                 setup.ConfigurationFile = Path.GetFullPath(configFile);
             setup.ApplicationBase = baseFolder;
-            setup.ShadowCopyFiles = m_xmrmConfig.GetBoolean(SHADOW_COPY, true).ToString().ToLower();
+            setup.ShadowCopyFiles = mrmConfig.GetBoolean(SHADOW_COPY, true).ToString().ToLower();
 
             return true;
         }
 
         protected override bool IsGod {
-            get {
-                return m_config.Configs["MRM"].GetBoolean("XMRMGodScripts", false) || m_xmrmConfig.GetBoolean(GOD, false);
-            }
+            get { return m_isGod; }
         }
 
         private bool TestConfig(string configFile, string assembly, string clazz) {
@@ -170,7 +170,6 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
         /// <param name="script">The script to parse for information.</param>
         /// <returns>A config object with the values taken from the script.</returns>
         private IConfig LoadConfigValues(out string[] scriptArguments) {
-
             //Load in the arguments as command line arguments
             CommandLineConfig argConfig = new CommandLineConfig(ScriptText, true, "\n", " ");
 
@@ -200,15 +199,15 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
             config.Merge(m_config);
             config.Merge(argConfig);
 
-            IConfig xmrm = config.Configs[XMRM];
+            IConfig mrmConfig = config.Configs[XMRM];
 
             //If a config file is specified merge those values in
-            if (xmrm.Contains(CONFIG_FILE)) {
+            if (mrmConfig.Contains(CONFIG_FILE)) {
                 try {
-                    IConfigSource fileSource = new DotNetConfigSource(xmrm.Get(CONFIG_FILE));
+                    IConfigSource fileSource = new DotNetConfigSource(mrmConfig.Get(CONFIG_FILE));
                     config.Merge(fileSource);
                 } catch (Exception e) {
-                    ErrorString = ("Unable to load config file from '" + xmrm.Get(CONFIG_FILE) + "'. " + e.Message);
+                    ErrorString = ("Unable to load config file from '" + mrmConfig.Get(CONFIG_FILE) + "'. " + e.Message);
                 }
             }
             return config.Configs[XMRM];

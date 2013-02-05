@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenSim.Region.OptionalModules.Scripting.Minimodule;
+using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 
 namespace OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide {
-    class PersistenceWrapper : IPersistence {
+    class PersistenceWrapper : KillableProxy, IPersistence {
         private IPersistence m_persistance;
 
         public PersistenceWrapper(IPersistence persistance) {

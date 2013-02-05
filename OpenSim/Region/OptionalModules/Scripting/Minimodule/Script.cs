@@ -109,11 +109,11 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
 
         protected string ErrorString {
             get {
-                return m_errors.ToArray().Aggregate<object, string>("", (sum, current) => sum + current + "\n").TrimEnd('\n');
+                //return m_errors.ToArray().Aggregate<object, string>("", (sum, current) => sum + current + "\n");
+                string ret = m_errors.ToArray().Aggregate<object, string>("", (sum, current) => sum + current + "\n");
+                return ret;
             }
-            set {
-                m_errors = new ArrayList(value.Split('\n').ToList());
-            }
+            set { m_errors = new ArrayList(value.Split('\n').ToList()); }
         }
 
         protected string OldScript { get { return m_oldScript; } }
@@ -237,22 +237,15 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 owner.SendAlertMessage(problem);
                 foreach (var line in Errors)
                     owner.SendAlertMessage(line.ToString());
-                //Console.WriteLine("Error2Console: " + m_error2Console + "\nError: " + ErrorString);
                 if (m_error2Console) {
                     m_log.Warn("[" + Type + "]: " + problem);
-                    foreach (var line in Errors)
-                        m_log.Debug(line.ToString());
-                    //if (ErrorString.Trim().Length > 0)
-                        //m_log.Debug(ErrorString);
+                    Console.WriteLine(ErrorString);
                 } else
                     m_log.Warn("[" + Type + "]: " + problem + " " + Errors[0]);
             } else {
                 m_log.Warn("[" + Type + "]: " + problem);
-                if (ErrorString.Trim().Length > 0)
-                    m_log.Debug(ErrorString);
+                Console.WriteLine(ErrorString);
             }
-            //m_scene.ForEachClient(user =>
-            //    user.SendAlertMessage("Unable to start " + Name + ". " + ErrorString + "."));
         }
 
         /// <summary>
@@ -320,6 +313,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 return true;
             } catch (Exception e) {
                 KillAppDomain();
+                Console.WriteLine("Problem creating app domain.");
                 ErrorString = "Unable to start MRM." + e.Message + "\n" + e.StackTrace;
                 while (e.InnerException != null) {
                     e = e.InnerException;

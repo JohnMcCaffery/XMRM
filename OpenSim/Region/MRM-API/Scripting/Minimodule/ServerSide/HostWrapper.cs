@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenSim.Region.OptionalModules.Scripting.Minimodule;
+using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 
 namespace OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide {
-    public class HostWrapper : MarshalByRefObject, IHost {
+    public class HostWrapper : KillableProxy, IHost {
         private IHost m_host;
 
         public HostWrapper(IHost host) {

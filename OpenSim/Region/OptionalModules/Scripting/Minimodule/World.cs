@@ -45,7 +45,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
         private readonly ISecurityCredential m_security;
         private readonly IHeightmap m_heights;
 
-        private readonly IObjectAccessor m_objs;
+        private readonly ObjectAccessorWrapper m_objs;
         private readonly ObjectAccessor m_rawObjs;
 
 
@@ -76,6 +76,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
         /// </summary>
         internal void Shutdown() {
             m_rawObjs.Shutdown();
+            m_objs.Kill(TimeSpan.FromMinutes(1));
 
             lock (_newUserListeners) {
                 foreach (var listener in _newUserListeners.ToArray())

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenSim.Region.OptionalModules.Scripting.Minimodule;
+using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
 
 namespace OpenSim.Region.MRM.API.Scripting.Minimodule.ServerSide {
-    public class WorldWrapper : MarshalByRefObject, IWorld {
+    public class WorldWrapper : KillableProxy, IWorld {
         private IWorld m_world;
 
         public WorldWrapper(IWorld world) {
