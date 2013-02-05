@@ -40,7 +40,7 @@ using OpenSim.Services.Interfaces;
 using OpenSim.Framework;
 using System.Threading;
 using Nini.Config;
-using OpenSim.Region.OptionalModules.Scripting.Minimodule.API.Sandboxed;
+using OpenSim.Region.OptionalModules.Scripting.Minimodule.Sandboxed;
 using Amib.Threading;
 using System.Collections;
 using OpenSim.Region.OptionalModules.API.Scripting.Minimodule;
@@ -240,8 +240,10 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 //Console.WriteLine("Error2Console: " + m_error2Console + "\nError: " + ErrorString);
                 if (m_error2Console) {
                     m_log.Warn("[" + Type + "]: " + problem);
-                    if (ErrorString.Trim().Length > 0)
-                        m_log.Debug(ErrorString);
+                    foreach (var line in Errors)
+                        m_log.Debug(line.ToString());
+                    //if (ErrorString.Trim().Length > 0)
+                        //m_log.Debug(ErrorString);
                 } else
                     m_log.Warn("[" + Type + "]: " + problem + " " + Errors[0]);
             } else {
@@ -313,12 +315,11 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule {
                 if (outcome != null) {
                     KillAppDomain();
                     ErrorString = outcome;
-                    Console.WriteLine("Problem. Outcome = " + outcome);
                     return false;
                 }
                 return true;
             } catch (Exception e) {
-                m_world.Shutdown();
+                KillAppDomain();
                 ErrorString = "Unable to start MRM." + e.Message + "\n" + e.StackTrace;
                 while (e.InnerException != null) {
                     e = e.InnerException;

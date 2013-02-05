@@ -139,6 +139,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                         m_objects.Add(obj.GlobalID, obj);
                     return new ObjectWrapper(obj);
                 } catch (Exception e) {
+                    m_log.Debug("Object accessor unable to look up object. " + e.Message);
                     return null;
                 }
             }
@@ -164,6 +165,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                         m_objects.Add(obj.GlobalID, obj);
                     return new ObjectWrapper(obj);
                 } catch (Exception e) {
+                    m_log.Debug("Object accessor unable to look up object. " + e.Message);
                     return null;
                 }
             }
@@ -196,7 +198,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                         m_objects.Add(obj.GlobalID, obj);
                     return new ObjectWrapper(obj);
                 } catch (Exception e) {
-                    Console.WriteLine(e);
+                    m_log.Debug("Object accessor unable to look up object. " + e.Message);
                     return null;
                 }
             }
@@ -278,17 +280,16 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
                 if (part == null || part.ParentGroup == null)
                     return false;
                 try {
-                    //m_scene.DeleteSceneObject(part.ParentGroup, false);
                     part.ParentGroup.DeleteGroupFromScene(false);
                     return true;
                 } catch (Exception e) {
-                    Console.WriteLine("Accessor unable to delete scene object. " + e.Message);
-                    m_log.ErrorFormat("[Minimodule]: Error while removing object from scene: " + e);
+                    m_log.ErrorFormat("[Minimodule]: Error while removing object from scene: {0}", e);
                     return false;
                 }
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                m_log.Debug("[Minimodle]: Object accessor unable to remove object.");
+            }
             return false;
-            //throw new NotSupportedException("Collection is read-only. TODO FIX.");
         }
 
         public bool IsReadOnly
